@@ -1,0 +1,5 @@
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <group prefer="public">
+    <public publicId="-//Recordare//DTD MusicXML 3.1 Partwise//EN" uri="partwise.dtd"/>
+  </group>
+</catalog>

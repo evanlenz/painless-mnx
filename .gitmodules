@@ -1,0 +1,3 @@
+[submodule "mnxconverter"]
+	path = tests/mnxconverter
+	url = git@github.com:w3c/mnxconverter.git
