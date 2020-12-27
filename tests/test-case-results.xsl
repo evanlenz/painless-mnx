@@ -4,6 +4,8 @@
   xmlns:my="http://localhost"
   exclude-result-prefixes="xs">
 
+  <xsl:output indent="yes"/>
+
   <xsl:template match="/">
     <xsl:apply-templates mode="expected" select="collection('mnxconverter/tests?select=*.mnx')"/>
     <xsl:apply-templates mode="actual" select="collection('mnxconverter/tests?select=*.musicxml')"/>
