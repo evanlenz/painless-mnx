@@ -1,7 +1,8 @@
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  exclude-result-prefixes="xs">
+  xmlns:my="http://localhost"
+  exclude-result-prefixes="my xs">
 
   <!-- FIXME: implement the proper (as opposed to naive) behaviors here. -->
   <xsl:variable name="time" select="/score-partwise/part[1]/measure[1]/attributes/time"/>
@@ -48,7 +49,7 @@
         <xsl:apply-templates select="attributes/clef"/>
       </directions-part>
       <sequence>
-        <xsl:apply-templates select="note"/>
+        <xsl:apply-templates mode="event" select="note"/>
       </sequence>
     </measure>
   </xsl:template>
@@ -57,10 +58,23 @@
     <clef sign="{sign}" line="{line}"/>
   </xsl:template>
 
-  <xsl:template match="note">
+  <xsl:template mode="event" match="note">
     <event value="/{4 div (duration div $divisions)}">
-      <note pitch="{pitch/step}{pitch/octave}"/>
+      <xsl:apply-templates mode="note" select="pitch"/>
     </event>
   </xsl:template>
+
+  <xsl:template mode="note" match="pitch">
+    <note pitch="{step}{my:pitch-modifier(alter)}{octave}"/>
+  </xsl:template>
+
+  <xsl:function name="my:pitch-modifier">
+    <xsl:param name="alter"/>
+    <xsl:apply-templates mode="translate-pitch-modifier" select="$alter"/>
+  </xsl:function>
+
+          <xsl:template mode="translate-pitch-modifier" match="alter"/>
+          <xsl:template mode="translate-pitch-modifier" match="alter[. eq '-1']">b</xsl:template>
+          <xsl:template mode="translate-pitch-modifier" match="alter[. eq '1']">#</xsl:template>
 
 </xsl:stylesheet>
