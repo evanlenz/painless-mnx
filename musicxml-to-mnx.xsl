@@ -13,14 +13,14 @@
   <xsl:template match="/">
     <mnx>
       <global>
-        <measure>
-          <directions>
+        <measure-global>
+          <directions-global>
             <xsl:variable name="time-signature">
               <xsl:apply-templates select="$time"/>
             </xsl:variable>
             <time signature="{$time-signature}"/>
-          </directions>
-        </measure>
+          </directions-global>
+        </measure-global>
       </global>
       <xsl:apply-templates select="/score-partwise/part"/>
     </mnx>
@@ -45,9 +45,9 @@
 
   <xsl:template match="measure">
     <measure>
-      <directions>
+      <directions-part>
         <xsl:apply-templates select="attributes/clef"/>
-      </directions>
+      </directions-part>
       <sequence>
         <xsl:apply-templates select="note"/>
       </sequence>
