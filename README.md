@@ -11,7 +11,7 @@ See also his Python-based [mnxconverter](https://github.com/w3c/mnxconverter) pr
 ## Running the tests
 Run run-tests.sh (from the tests directory) after putting these jar files in your CLASSPATH environment variable:
 
- * the [Saxon-HE](https://sourceforge.net/projects/saxon/files/Saxon-HE/10/Java/) jar file (for XSLT processing)
+ * the jar file for [Saxon-HE](https://saxon.sourceforge.net/#F11HE) version 11 or later (for XSLT processing)
  * resolver.jar from the [Apache xml-commons project](http://xerces.apache.org/xml-commons/) (for DTD resolution)
 
 NOTE: The tests don't pass yet, since this project is just getting started.
