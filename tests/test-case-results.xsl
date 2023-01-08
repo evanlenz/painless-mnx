@@ -2,9 +2,12 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:my="http://localhost"
+  expand-text="yes"
   exclude-result-prefixes="xs">
 
   <xsl:output indent="yes"/>
+
+  <xsl:param name="conversion-xslt" select="'../musicxml-to-mnx.xsl'"/>
 
   <xsl:template match="/">
     <xsl:apply-templates mode="expected" select="collection('mnxconverter/tests?select=*.mnx')"/>
@@ -18,10 +21,11 @@
   </xsl:template>
 
   <xsl:template mode="actual" match="/">
+    <xsl:message>Transforming {my:file-name(.)}</xsl:message>
     <xsl:result-document href="actual/{my:file-name(.) ! replace(., '.musicxml$', '.mnx')}">
       <xsl:sequence select="transform(
                               map{
-                                'stylesheet-location':'../musicxml-to-mnx.xsl',
+                                'stylesheet-location':$conversion-xslt,
                                 'source-node':.
                               }
                             )?output"/>
