@@ -4,7 +4,7 @@
   exclude-result-prefixes="xs">
 
   <!-- FIXME: implement the proper (as opposed to naive) behavior here -->
-  <xsl:variable name="time" select="/score-partwise/part/measure[1]/attributes/time"/>
+  <xsl:variable name="time" select="/score-partwise/part[1]/measure[1]/attributes/time"/>
 
   <xsl:variable name="beat-type" as="xs:integer">
     <xsl:value-of select="$time/beat-type/number(.)"/>
