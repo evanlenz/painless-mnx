@@ -65,7 +65,13 @@
   </xsl:template>
 
   <xsl:template mode="note" match="pitch">
-    <note pitch="{step}{my:pitch-modifier(alter)}{octave}"/>
+    <note pitch="{step}{my:pitch-modifier(alter)}{octave}">
+      <xsl:apply-templates select="../accidental"/>
+    </note>
+  </xsl:template>
+
+  <xsl:template match="accidental">
+    <xsl:attribute name="accidental" select="."/>
   </xsl:template>
 
   <xsl:function name="my:pitch-modifier">
