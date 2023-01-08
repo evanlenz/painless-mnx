@@ -6,10 +6,7 @@
   <!-- FIXME: implement the proper (as opposed to naive) behaviors here. -->
   <xsl:variable name="time" select="/score-partwise/part[1]/measure[1]/attributes/time"/>
   <xsl:variable name="key-fifths" select="/score-partwise/part[1]/measure[1]/attributes/key/fifths"/>
-
-  <xsl:variable name="beat-type" as="xs:integer">
-    <xsl:value-of select="$time/beat-type/number(.)"/>
-  </xsl:variable>
+  <xsl:variable name="divisions" select="/score-partwise/part[1]/measure[1]/attributes/divisions"/>
 
   <xsl:template match="/">
     <mnx>
@@ -61,12 +58,7 @@
   </xsl:template>
 
   <xsl:template match="note">
-    <xsl:variable name="duration">
-      <xsl:variable name="ratio" select="duration div $beat-type"/>
-      <xsl:sequence select="if ($ratio eq 1) then '/1'
-                       else () (:TODO: implement:)"/>
-    </xsl:variable>
-    <event value="{$duration}">
+    <event value="/{4 div (duration div $divisions)}">
       <note pitch="{pitch/step}{pitch/octave}"/>
     </event>
   </xsl:template>
