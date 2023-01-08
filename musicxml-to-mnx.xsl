@@ -3,8 +3,9 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="xs">
 
-  <!-- FIXME: implement the proper (as opposed to naive) behavior here -->
+  <!-- FIXME: implement the proper (as opposed to naive) behaviors here. -->
   <xsl:variable name="time" select="/score-partwise/part[1]/measure[1]/attributes/time"/>
+  <xsl:variable name="key-fifths" select="/score-partwise/part[1]/measure[1]/attributes/key/fifths"/>
 
   <xsl:variable name="beat-type" as="xs:integer">
     <xsl:value-of select="$time/beat-type/number(.)"/>
@@ -15,10 +16,8 @@
       <global>
         <measure-global>
           <directions-global>
-            <xsl:variable name="time-signature">
-              <xsl:apply-templates select="$time"/>
-            </xsl:variable>
-            <time signature="{$time-signature}"/>
+            <xsl:apply-templates mode="time-signature" select="$time"/>
+            <xsl:apply-templates mode="key-signature" select="$key-fifths"/>
           </directions-global>
         </measure-global>
       </global>
@@ -26,10 +25,13 @@
     </mnx>
   </xsl:template>
 
-  <xsl:template match="time">
-    <xsl:value-of select="beats"/>
-    <xsl:text>/</xsl:text>
-    <xsl:value-of select="beat-type"/>
+  <xsl:template mode="time-signature" match="time">
+    <time signature="{beats}/{beat-type}"/>
+  </xsl:template>
+
+  <xsl:template mode="key-signature" match="fifths[. eq '0']"/>
+  <xsl:template mode="key-signature" match="fifths">
+    <key fifths="{.}"/>
   </xsl:template>
 
   <xsl:template match="part">
