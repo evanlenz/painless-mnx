@@ -1,3 +1,6 @@
 [submodule "mnxconverter"]
 	path = tests/mnxconverter
 	url = git@github.com:w3c/mnxconverter.git
+[submodule "tests/xslt-visualizer"]
+	path = tests/xslt-visualizer
+	url = https://github.com/evanlenz/xslt-visualizer

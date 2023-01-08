@@ -15,3 +15,16 @@ Run run-tests.sh (from the tests directory) after putting these jar files in you
  * resolver.jar from the [Apache xml-commons project](http://xerces.apache.org/xml-commons/) (for DTD resolution)
 
 NOTE: The tests don't pass yet, since this project is just getting started.
+
+## Visualizing the test-case conversions
+Optionally, you can visualize the XSLT transformation for each test case (using the [xslt-visualizer](https://github.com/evanlenz/xslt-visualizer) project), by running visualize.sh.
+
+For example, from the tests directory, run:
+
+    visualize.sh basic
+
+To view the results:
+
+  1) Open visualized-conversions/basic.html in the browser.
+  2) Drag the slider to inspect the transformation.
+  3) Hover over the center column's match patterns (grouped by mode) to see the invoked XSLT.
