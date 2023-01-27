@@ -49,7 +49,9 @@
         <xsl:apply-templates select="attributes/clef"/>
       </directions-part>
       <sequence>
-        <xsl:apply-templates mode="event" select="note"/>
+        <xsl:for-each-group select="note" group-starting-with="note[not(chord)]">
+          <xsl:apply-templates mode="event" select="."/>
+        </xsl:for-each-group>
       </sequence>
     </measure>
   </xsl:template>
@@ -60,7 +62,7 @@
 
   <xsl:template mode="event" match="note">
     <event value="/{4 div (duration div $divisions)}">
-      <xsl:apply-templates mode="note" select="pitch"/>
+      <xsl:apply-templates mode="note" select="current-group()/pitch"/>
     </event>
   </xsl:template>
 
