@@ -62,14 +62,18 @@
 
   <xsl:template mode="event" match="note">
     <event value="/{4 div (duration div $divisions)}">
-      <xsl:apply-templates mode="note" select="current-group()/pitch"/>
+      <xsl:apply-templates mode="note-or-rest" select="current-group()/(pitch | rest)"/>
     </event>
   </xsl:template>
 
-  <xsl:template mode="note" match="pitch">
+  <xsl:template mode="note-or-rest" match="pitch">
     <note pitch="{step}{my:pitch-modifier(alter)}{octave}">
       <xsl:apply-templates select="../accidental"/>
     </note>
+  </xsl:template>
+
+  <xsl:template mode="note-or-rest" match="rest">
+    <rest/>
   </xsl:template>
 
   <xsl:template match="accidental">
