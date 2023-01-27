@@ -1,8 +1,9 @@
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:my="http://localhost"
-  exclude-result-prefixes="my xs">
+  xmlns:math="http://www.w3.org/2005/xpath-functions/math"
+  exclude-result-prefixes="my xs math">
 
   <!-- FIXME: implement the proper (as opposed to naive) behaviors here. -->
   <xsl:variable name="time" select="/score-partwise/part[1]/measure[1]/attributes/time"/>
@@ -61,7 +62,9 @@
   </xsl:template>
 
   <xsl:template mode="event" match="note">
-    <event value="/{4 div (duration div $divisions)}">
+    <xsl:variable name="base-duration" select="ceiling(duration * math:pow((2 div 3), count(dot)))"/>
+    <event value="/{4 div ($base-duration div $divisions)}{
+                    for $dot in (0 to count(dot)) return 'd'[$dot ge 1]}">
       <xsl:apply-templates mode="note-or-rest" select="current-group()/(pitch | rest)"/>
     </event>
   </xsl:template>
