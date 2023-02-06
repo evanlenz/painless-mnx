@@ -5,23 +5,33 @@
   xmlns:math="http://www.w3.org/2005/xpath-functions/math"
   exclude-result-prefixes="my xs math">
 
-  <!-- FIXME: implement the proper (as opposed to naive) behaviors here. -->
-  <xsl:variable name="time" select="/score-partwise/part[1]/measure[1]/attributes/time"/>
-  <xsl:variable name="key-fifths" select="/score-partwise/part[1]/measure[1]/attributes/key/fifths"/>
+  <!-- FIXME: implement the proper (as opposed to naive) behavior here. -->
   <xsl:variable name="divisions" select="/score-partwise/part[1]/measure[1]/attributes/divisions"/>
 
   <xsl:template match="/">
     <mnx>
       <global>
-        <measure-global>
-          <directions-global>
-            <xsl:apply-templates mode="time-signature" select="$time"/>
-            <xsl:apply-templates mode="key-signature" select="$key-fifths"/>
-          </directions-global>
-        </measure-global>
+        <!-- ASSUMPTION: Each part in the input has the same number of measures -->
+        <xsl:apply-templates mode="measure-global" select="/score-partwise/part[1]/measure"/>
       </global>
       <xsl:apply-templates select="/score-partwise/part"/>
     </mnx>
+  </xsl:template>
+
+  <xsl:template mode="measure-global" match="measure">
+    <xsl:variable name="time-signature" as="element()?">
+      <xsl:apply-templates mode="time-signature" select="attributes/time"/>
+    </xsl:variable>
+    <xsl:variable name="key-signature" as="element()?">
+      <xsl:apply-templates mode="key-signature" select="attributes/key/fifths"/>
+    </xsl:variable>
+    <measure-global>
+      <xsl:if test="$time-signature or $key-signature">
+        <directions-global>
+          <xsl:sequence select="$time-signature, $key-signature"/>
+        </directions-global>
+      </xsl:if>
+    </measure-global>
   </xsl:template>
 
   <xsl:template mode="time-signature" match="time">
@@ -45,10 +55,15 @@
   </xsl:template>
 
   <xsl:template match="measure">
+    <xsl:variable name="clef" as="element()?">
+      <xsl:apply-templates select="attributes/clef"/>
+    </xsl:variable>
     <measure>
-      <directions-part>
-        <xsl:apply-templates select="attributes/clef"/>
-      </directions-part>
+      <xsl:if test="$clef">
+        <directions-part>
+          <xsl:sequence select="$clef"/>
+        </directions-part>
+      </xsl:if>
       <sequence>
         <xsl:for-each-group select="note" group-starting-with="note[not(chord)]">
           <xsl:apply-templates mode="event" select="."/>
