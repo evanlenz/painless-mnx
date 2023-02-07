@@ -19,16 +19,15 @@
   </xsl:template>
 
   <xsl:template mode="measure-global" match="measure">
-    <xsl:variable name="time-signature" as="element()?">
+    <xsl:variable name="directions" as="element()*">
       <xsl:apply-templates mode="time-signature" select="attributes/time"/>
-    </xsl:variable>
-    <xsl:variable name="key-signature" as="element()?">
       <xsl:apply-templates mode="key-signature" select="attributes/key/fifths"/>
+      <xsl:apply-templates mode="repeat" select="barline/repeat"/>
     </xsl:variable>
     <measure-global>
-      <xsl:if test="$time-signature or $key-signature">
+      <xsl:if test="$directions">
         <directions-global>
-          <xsl:sequence select="$time-signature, $key-signature"/>
+          <xsl:sequence select="$directions"/>
         </directions-global>
       </xsl:if>
     </measure-global>
@@ -41,6 +40,12 @@
   <xsl:template mode="key-signature" match="fifths[. eq '0']"/>
   <xsl:template mode="key-signature" match="fifths">
     <key fifths="{.}"/>
+  </xsl:template>
+
+  <xsl:template mode="repeat" match="repeat">
+    <repeat type="{if (@direction eq 'forward') then 'start' else 'end'}">
+      <xsl:copy-of select="@times"/>
+    </repeat>
   </xsl:template>
 
   <xsl:template match="part">
